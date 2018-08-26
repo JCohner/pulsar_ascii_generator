@@ -2,7 +2,7 @@ function setup() {
 	createCanvas(600, 600);
 	background(34,110,232);
 	centerPoint();
-	strokeCap(PROJECT);
+	strokeCap(SQUARE);
 	strokeWeight(4);
 	//angleMode(DEGREES);
 }
@@ -34,22 +34,26 @@ function draw() {
 	}
 	
 	for (ii = 0; ii < 7; ++ii){
-		console.log(ii + '\n');
-		console.log(lengths[ii] + '\n');
 		x = lengths[ii] * sin(angles[ii]);
 		y = lengths[ii] * cos(angles[ii]);
 		ray(x,y);
-		var guy = spaceDash(x,y, "Dash" ,angles[ii]);
-		dash(guy.x,guy.y, angles[ii]);
-		guy = spaceDash(guy.x, guy.y,"Dash" ,angles[ii]);
-		dot(guy.x, guy.y, angles[ii]);
-		guy = spaceDash(guy.x, guy.y,"Dot" ,angles[ii]);
-		dash(guy.x,guy.y, angles[ii]);
-		/*
+
+		var guy = {
+			x: x,
+			y: y,
+			prevShape : "Dash"
+		};
+		
 		for (jj = 0; jj < 8; ++jj){
-			dot(x,y); 
-			//console.log("Char "+chars[ii] + "bit "+chars[ii][jj]);
-		}*/
+			guy = spaceDash(guy.x, guy.y,guy.prevShape,angles[ii]);
+			if (chars[ii][jj] == 0) {
+				dash(guy.x,guy.y, angles[ii]);
+				guy.prevShape = "Dash";	
+			} else {
+				dot(guy.x,guy.y, angles[ii]);
+				guy.prevShape = "Dot";
+			}	
+		}
 	}
 
 }
@@ -73,7 +77,7 @@ function dot(x1, y1, angle){
 }
 
 function dash(x1, y1, angle){
-	var dotlen = 10; 
+	var dotlen = 12; 
 	var xdot1 = dotlen * sin(angle + PI/2);
 	var ydot1 = dotlen * cos(angle + PI/2);
 
@@ -103,7 +107,8 @@ function spaceDash(xPrev,yPrev,prevTick,angle){
 	var yNew = yPrev + ydot2;
 	var newPoint = {
 		x : xNew,
-		y : yNew 
+		y : yNew,
+		prevShape : prevTick 
 	};
 	return newPoint;
 }
