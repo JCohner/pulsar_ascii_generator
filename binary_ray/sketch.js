@@ -1,6 +1,7 @@
 function setup() {
-	createCanvas(1920, 1080);
-	background(30,80,160);
+	createCanvas(600, 600);
+	background(0);
+	stroke(230);
 	centerPoint();
 	strokeCap(SQUARE);
 	strokeWeight(4);
@@ -13,8 +14,8 @@ function Character(array, angle, length){
 	this.length = length;
 }
 
-var originX = 450;
-var originY = 600;
+var originX = 300;
+var originY = 300;
 var fixedRot = 90;	
 
 var ii;
@@ -22,13 +23,13 @@ var jj;
 var doOnce = 1;
 function draw() {
 	if (doOnce == 1){
-		var A = new Character([0,1,0,0,0,0,0,1], 0 + fixedRot, 33);
-		var s = new Character([0,1,1,1,0,0,1,1], 75 + fixedRot, 58);
-		var k = new Character([0,1,1,0,1,0,1,1], 240 + fixedRot, 91);//0b01101011;
-		var space = new Character([0,0,1,0,0,0,0,0], 108 + fixedRot, 109);//0b0010000;
-		var W = new Character([0,1,0,1,0,1,1,1], 315 + fixedRot, 180);//0b01010111;
-		var h = new Character([0,1,1,0,1,0,0,0], 195 + fixedRot, 210);//0b01101000;
-		var y = new Character([0,1,1,1,1,0,0,1], 45 + fixedRot,250);//0b01111001;
+		var A = new Character([0,1,0,0,0,0,0,1], 0 + fixedRot, 35);
+		var s = new Character([0,1,1,1,0,0,1,1], 75 + fixedRot, 60);
+		var k = new Character([0,1,1,0,1,0,1,1], 240 + fixedRot, 85);//0b01101011;
+		var space = new Character([0,0,1,0,0,0,0,0], 108 + fixedRot, 125);//0b0010000;
+		var W = new Character([0,1,0,1,0,1,1,1], 315 + fixedRot, 175);//0b01010111;
+		var h = new Character([0,1,1,0,1,0,0,0], 195 + fixedRot, 200);//0b01101000;
+		var y = new Character([0,1,1,1,1,0,0,1], 45 + fixedRot,225);//0b01111001;
 
 		var chars = [A, s, k, space, W, h, y];
 		
@@ -80,10 +81,19 @@ function dot(x1, y1, angle){
 	var dotlen = 10; 
 	var xdot1 = dotlen * sin(angle);
 	var ydot1 = dotlen * cos(angle);
-	line((x1 + originX),(y1 + originY), (originX + x1 + xdot1), (originY + y1 + ydot1));
+	
+	x1 = x1 + originX;
+	y1 = y1 + originY;
+
+	var x2 = x1 + xdot1;
+	var y2 = y1 + ydot1;
+
+	line(x1,y1, x2, y2);
+	return;
 }
 
 function dash(x1, y1, angle){
+	//orthoganal to ray
 	var dotlen = 12; 
 	var xdot1 = dotlen * sin(angle + PI/2);
 	var ydot1 = dotlen * cos(angle + PI/2);
@@ -96,6 +106,7 @@ function dash(x1, y1, angle){
 	var x2_2 = x1 - 1/2 * xdot1;
 	var y2_2 = y1 - 1/2 * ydot1;
 	line(x2_1,y2_1, x2_2, y2_2);
+	return;
 }
 
 function spaceDash(xPrev,yPrev,prevTick,angle){
@@ -105,7 +116,7 @@ function spaceDash(xPrev,yPrev,prevTick,angle){
 	if (prevTick == "Dash") {
 		strokelen = 8;
 	} else {
-		strokelen = 18; 
+		strokelen = 16; 
 	}
 	var xdot2 = strokelen * sin(angle);
 	var ydot2 = strokelen * cos(angle);
